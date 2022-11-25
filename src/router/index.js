@@ -22,6 +22,7 @@ const routes = [
   //     },
   //   ],
   // },
+  ...cockpitRouter, //驾驶舱路由
 ];
 
 const router = createRouter({
