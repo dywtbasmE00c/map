@@ -6,8 +6,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <script src="http://a.amap.com/jsapi_demos/static/china.js"></script>
-    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=f4f32334f0538f5fb6c8066bab3f06a0&plugin=AMap.MarkerClusterer"></script>
+    <script>
+      window._AMapSecurityConfig = {
+        securityJsCode: '4079985ef0a4da49645397f077502914'
+      }
+    </script>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=2.0&key=f4f32334f0538f5fb6c8066bab3f06a0&plugin=AMap.DistrictSearch"></script>
   </head>
   <body>
     <noscript>
