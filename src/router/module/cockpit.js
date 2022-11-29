@@ -1,9 +1,11 @@
 // cockpit
+import cockpitLayout from "@/layout/cockpitLayout.vue";
 const cockpitRouter = [
   {
     path: "/cockpit",
     redirect: "/cockpitWork",
-    component: () => import("@/views/cockpit/cockpitHome.vue"),
+    component: cockpitLayout,
+    hidden: true,
     children: [
       {
         path: "/cockpitWork",
