@@ -6,5 +6,17 @@ module.exports = defineConfig({
     externals: {
       AMap: 'AMap'
     }
+  },
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'https://restapi.amap.com/v3',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": ''
+        }
+      }
+    }
   }
 });
