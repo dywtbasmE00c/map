@@ -7,18 +7,25 @@
   </div>
 </template>
 <script>
+import { markRaw } from 'vue'
 import * as echarts from 'echarts';
 
 export default {
   mounted() {
     this.initChart()
+    
+  },
+  data() {
+    return {
+      myChart: null
+    }
   },
   methods: {
     initChart() {
       // 基于准备好的dom，初始化echarts实例
-      const myChart = echarts.init(document.getElementById('pic'));
+      this.myChart = markRaw(echarts.init(document.getElementById('pic')));
       // 绘制图表
-      myChart.setOption({
+      this.myChart.setOption({
         title: {
           text: 'ECharts 入门示例'
         },
@@ -35,6 +42,9 @@ export default {
           }
         ]
       });
+      window.addEventListener('resize', () => {
+        this.myChart.resize();
+      })
     }
   },
 };
@@ -47,6 +57,7 @@ export default {
   &-left {
     width: 25%;
     height: 60%;
+    pointer-events: all;
   }
   &-right {
     width: 25%;
@@ -58,7 +69,7 @@ export default {
   }
 }
 .pic {
-  width: 200px;
+  width: 100%;
   height: 200px;
 }
 </style>

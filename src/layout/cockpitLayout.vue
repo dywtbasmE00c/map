@@ -2,9 +2,9 @@
   <el-container class="workContainer">
     <div id="workSession" class="workSession"></div>
     <el-header class="input">
-      <input placeholder="输入省市区名称" v-model="value" />
+      <!-- <input placeholder="输入省市区名称" v-model="value" />
       <button @click="change">确定</button>
-      {{ value }}
+      {{ value }} -->
     </el-header>
     <el-main class="app-main">
       <router-view />
@@ -122,8 +122,8 @@ export default {
   top: 10px;
   left: 10px; */
   z-index: 30;
-  height: 1.6rem;
   color: white;
+  background: url('@/assets/cockpit/cockpit-title.png') no-repeat center/100%;
 }
 .app-main {
   pointer-events: none;
