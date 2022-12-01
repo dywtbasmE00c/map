@@ -118,9 +118,11 @@ export default {
   height: 100%;
 }
 .input {
-  position: absolute;
+  /* position: absolute;
   top: 10px;
-  left: 10px;
+  left: 10px; */
+  z-index: 30;
+  height: 1.6rem;
   color: white;
 }
 .app-main {
