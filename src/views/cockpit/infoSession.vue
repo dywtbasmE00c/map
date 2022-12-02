@@ -1,3 +1,3 @@
 <template>
-  <div>infoSession</div>
+  <div>info</div>
 </template>

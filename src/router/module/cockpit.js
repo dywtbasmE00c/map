@@ -13,6 +13,7 @@ const cockpitRouter = [
       },
       {
         path: "/cockpitInfo",
+        name: 'infoSession',
         component: () => import("@/views/cockpit/infoSession.vue"),
       },
     ],

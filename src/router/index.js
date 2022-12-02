@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import cockpitRouter from "./module/cockpit";
+import platformRouter from "./module/platform.js"
 
 const routes = [
   {
@@ -23,6 +24,7 @@ const routes = [
   //   ],
   // },
   ...cockpitRouter, //驾驶舱路由
+  ...platformRouter, //驾驶舱路由
 ];
 
 const router = createRouter({

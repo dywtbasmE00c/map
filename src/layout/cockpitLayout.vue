@@ -1,5 +1,6 @@
 <template>
   <el-container class="workContainer">
+    <div class="workBg"></div>
     <div id="workSession" class="workSession"></div>
     <el-header class="input">
       <!-- <input placeholder="输入省市区名称" v-model="value" />
@@ -7,7 +8,7 @@
       {{ value }} -->
     </el-header>
     <el-main class="app-main">
-      <router-view />
+      <router-view :area="value" />
     </el-main>
   </el-container>
 </template>
@@ -37,10 +38,11 @@ export default {
   methods: {
     initMap() {
       this.map = new AMap.Map("workSession", {
-        // zoom: 5,
+        zoom: 6,
         center: [116.30946, 39.937629],
         viewMode: "3D",
         mapStyle: "amap://styles/darkblue",
+        resizeEnable: true,
       });
       this.geoCoder = new AMap.Geocoder();
       let opts = {
@@ -52,7 +54,7 @@ export default {
       this.drawBounds();
       this.mapClick();
     },
-    drawBounds() {
+    drawBounds(city) {
       // if(!this.value) {
       //   value = '河北省'
       // }
@@ -64,6 +66,7 @@ export default {
 
         that.polygons = [];
         let bounds = result.districtList[0].boundaries;
+        console.log(result);
         if (bounds) {
           for (var i = 0, l = bounds.length; i < l; i++) {
             //生成行政区划polygon
@@ -77,10 +80,11 @@ export default {
             that.polygons.push(polygon);
           }
           that.map.add(that.polygons);
-          that.map.setFitView(that.polygons);
+          // that.map.setFitView(that.polygons);
         }
       });
     },
+    getProvince() {},
     change() {
       this.drawBounds();
     },
@@ -107,10 +111,22 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="less" scoped>
 .workContainer {
   width: 100%;
   height: 100%;
+}
+.workBg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 20;
+  pointer-events: none;
+  background: radial-gradient(
+    farthest-corner at 50% 46.25%,
+    rgba(0, 16, 37, 0) 0%,
+    #001836 100%
+  );
 }
 .workSession {
   position: absolute;
@@ -122,11 +138,15 @@ export default {
   top: 10px;
   left: 10px; */
   z-index: 30;
+  height: 10%;
   color: white;
-  background: url('@/assets/cockpit/cockpit-title.png') no-repeat center/100%;
+  background: url("@/assets/cockpit/cockpit-title.png") no-repeat top/100%;
 }
 .app-main {
   pointer-events: none;
   z-index: 30;
+}
+/deep/.el-main {
+  padding-top: 0;
 }
 </style>
