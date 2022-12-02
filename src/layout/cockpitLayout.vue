@@ -13,6 +13,7 @@
   </el-container>
 </template>
 <script>
+import { markRaw } from "vue";
 import AMap from "AMap";
 export default {
   data() {
@@ -58,33 +59,37 @@ export default {
       // if(!this.value) {
       //   value = '河北省'
       // }
+      if (this.polygons) {
+        this.polygons.forEach((item, index) => {
+          this.map.remove(this.polygons[index]);
+        });
+      }
       const that = this;
       this.district.search(this.value, function (status, result) {
-        if (that.polygons) {
-          that.map.remove(that.polygons);
-        }
-
         that.polygons = [];
-        let bounds = result.districtList[0].boundaries;
-        console.log(result);
-        if (bounds) {
-          for (var i = 0, l = bounds.length; i < l; i++) {
-            //生成行政区划polygon
-            let polygon = new AMap.Polygon({
-              strokeWeight: 1,
-              path: bounds[i],
-              fillOpacity: 0.4,
-              fillColor: "red",
-              strokeColor: "purple",
-            });
-            that.polygons.push(polygon);
-          }
-          that.map.add(that.polygons);
-          // that.map.setFitView(that.polygons);
-        }
+        const cities = result.districtList[0].districtList;
+        cities.forEach((item, index) => {
+          that.district.search(item.name, function (status, result) {
+            that.polygons[index] = [];
+            let bounds = result.districtList[0].boundaries;
+            if (bounds) {
+              for (var i = 0, l = bounds.length; i < l; i++) {
+                //生成行政区划polygon
+                let polygon = new AMap.Polygon({
+                  strokeWeight: 1,
+                  path: bounds[i],
+                  fillOpacity: 0.4,
+                  fillColor: "red",
+                  strokeColor: "purple",
+                });
+                that.polygons[index].push(polygon);
+              }
+              that.map.add(that.polygons[index]);
+            }
+          });
+        });
       });
     },
-    getProvince() {},
     change() {
       this.drawBounds();
     },
