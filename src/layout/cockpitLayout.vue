@@ -6,6 +6,9 @@
       <!-- <input placeholder="输入省市区名称" v-model="value" />
       <button @click="change">确定</button>
       {{ value }} -->
+      <div class="input-close" @click="toPlatform">
+        <el-icon><SortUp /></el-icon>回到工作台
+      </div>
     </el-header>
     <el-main class="app-main">
       <router-view :area="value" />
@@ -13,15 +16,18 @@
   </el-container>
 </template>
 <script>
-import { markRaw } from "vue";
+import { SortUp } from '@element-plus/icons-vue'
 import AMap from "AMap";
 export default {
+  components: {
+    SortUp
+  },
   data() {
     return {
       map: null,
       district: null,
       geoCoder: null,
-      value: "河北省",
+      value: "浙江省",
       polygons: [],
     };
   },
@@ -42,7 +48,7 @@ export default {
         zoom: 6,
         center: [116.30946, 39.937629],
         viewMode: "3D",
-        mapStyle: "amap://styles/darkblue",
+        mapStyle: "amap://styles/fresh",
         resizeEnable: true,
       });
       this.geoCoder = new AMap.Geocoder();
@@ -55,7 +61,7 @@ export default {
       this.drawBounds();
       this.mapClick();
     },
-    drawBounds(city) {
+    drawBounds() {
       // if(!this.value) {
       //   value = '河北省'
       // }
@@ -113,11 +119,15 @@ export default {
         });
       });
     },
+    toPlatform() {
+      this.$router.push('/platform')
+    }
   },
 };
 </script>
 <style lang="less" scoped>
 .workContainer {
+  position: relative;
   width: 100%;
   height: 100%;
 }
@@ -139,13 +149,17 @@ export default {
   height: 100%;
 }
 .input {
-  /* position: absolute;
-  top: 10px;
-  left: 10px; */
   z-index: 30;
+  display: flex;
+  justify-content: flex-end;
   height: 10%;
   color: white;
   background: url("@/assets/cockpit/cockpit-title.png") no-repeat top/100%;
+  &-close {
+    display: flex;
+    align-items: center;
+    height: 30px;
+  }
 }
 .app-main {
   pointer-events: none;

@@ -15,5 +15,6 @@ const app = createApp(App);
 // app.config.globalProperties.$echarts = echarts
 
 app.use(ElementPlus);
+
 app.use(router);
 app.mount("#app");
