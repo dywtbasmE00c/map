@@ -18,6 +18,7 @@
 <script>
 import { SortUp } from '@element-plus/icons-vue'
 import AMap from "AMap";
+import { capitals } from './cockpitMarker.js'
 export default {
   components: {
     SortUp
@@ -29,6 +30,7 @@ export default {
       geoCoder: null,
       value: "浙江省",
       polygons: [],
+      circleMarker: null
     };
   },
   // watch: {
@@ -58,6 +60,7 @@ export default {
         // level: "province", //查询行政级别为 市
       };
       this.district = new AMap.DistrictSearch(opts);
+      this.marker();
       this.drawBounds();
       this.mapClick();
     },
@@ -121,6 +124,28 @@ export default {
     },
     toPlatform() {
       this.$router.push('/platform')
+    },
+    marker(){
+      for(let i=0;i<capitals.length;i+=1){
+        let center = capitals[i].center;
+        this.circleMarker = new AMap.CircleMarker({
+          center:center,
+          radius:10+Math.random()*10,//3D视图下，CircleMarker半径不要超过64px
+          strokeColor:'white',
+          strokeWeight:2,
+          strokeOpacity:0.5,
+          fillColor:'rgba(0,0,255,1)',
+          fillOpacity:0.5,
+          zIndex:10,
+          bubble:true,
+          cursor:'pointer',
+          clickable: true
+        })
+        this.circleMarker.setMap(this.map)
+        this.circleMarker.on('click', ()=> {
+          console.log(1)
+        })
+      }
     }
   },
 };
@@ -156,6 +181,7 @@ export default {
   color: white;
   background: url("@/assets/cockpit/cockpit-title.png") no-repeat top/100%;
   &-close {
+    cursor: pointer;
     display: flex;
     align-items: center;
     height: 30px;
