@@ -1,30 +1,26 @@
 <template>
-  <!-- <div>
-    <button @click="toCockpit">toCockpit</button>
-    <button @click="toPlatform">toPlatform</button>
-  </div> -->
   <div class="loginContainer">
     <div class="loginBox">
-      <h1>Please Login</h1>
+      <h1>用户登录</h1>
       <form>
         <div class="form-control">
-          <input type="text" required>
+          <input type="text" required v-model="params.userName">
           <label>
-            <span v-for="(item, idx) in ['用' ,'户', '名']" :style="{'transition-delay': idx*50 + 'ms'}">{{ item }}</span>
+            <span v-for="(item, idx) in ['用' ,'户', '名']" :key="idx" :style="{'transition-delay': idx*50 + 'ms'}">{{ item }}</span>
           </label>
         </div>
         <div class="form-control">
-          <input type="password" required>
+          <input type="password" required v-model="params.password">
           <label>
-            <span v-for="(item, idx) in ['密', '码']" :style="{ 'transition-delay': idx * 50 + 'ms' }">{{ item }}</span>
+            <span v-for="(item, idx) in ['密', '码']" :key="idx" :style="{ 'transition-delay': idx * 50 + 'ms' }">{{ item }}</span>
           </label>
         </div>
         <div class="form-control">
-          <input type="text" required placeholder="验证码">
+          <input type="text" required placeholder="验证码" v-model="params.imgCode">
           <img :src="base64Code" alt="11"  class="base64_img" @click="getCodeImg">
         </div>
-        <button class="btn">登录</button>
-        <p>没有账户？<a href="#">注册</a></p>
+        <button class="btn" @click.prevent="login">登录</button>
+        <!-- <p>没有账户？<a href="#">注册</a></p> -->
       </form>
     </div>
   </div>
@@ -36,21 +32,45 @@ export default {
   },
   data(){
     return {
-      base64Code: ''
+      base64Code: '',
+      params: {
+        userName: '',
+        password: '',
+        uuid: '',
+        imgCode: ''
+      }
     } 
   },
   methods: {
-    // toCockpit() {
-    //   this.$router.push("/cockpit");
-    // },
+    login(){
+      this.$http.get('/login/check',{
+        params: this.params
+      })
+        .then(res => {
+          if(res.data.code == '0') {
+            this.$store.commit({
+              type: 'getUserInfo',
+              token: res.data.token,
+              userInfo: res.data.userInfo
+            })
+            this.$router.push("/cockpit");
+          }
+        })
+        .catch(e => {
+          console.error(e)
+        })
+    },
+    toCockpit() {
+      this.$router.push("/cockpit");
+    },
     // toPlatform() {
     //   this.$router.push("/platform");
     // }
     getCodeImg() {
       this.$http.get('/login/captchaImage')
         .then(res => {
-          console.log(res, 'res')
           this.base64Code = 'data:image/png;base64,' + res.data.data.img
+          this.params.uuid = res.data.data.uuid
         })
         .catch(e => {
           console.error(e)

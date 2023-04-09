@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const request = axios.create({
-  baseURL: "api",
+  baseURL: "user_api",
 });
 
 export default request;

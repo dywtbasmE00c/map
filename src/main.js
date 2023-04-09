@@ -9,6 +9,7 @@ import "element-plus/dist/index.css";
 // import echarts from "./echarts";
 //router
 import router from "./router";
+import store from "./store";
 
 import request from "./Api/request";
 
@@ -19,6 +20,8 @@ const app = createApp(App);
 
 app.use(ElementPlus);
 app.config.globalProperties.$http = request;
+request.defaults.baseURL = 'user_api'
 
 app.use(router);
+app.use(store);
 app.mount("#app");
