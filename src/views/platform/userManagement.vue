@@ -10,12 +10,12 @@
         </div>
         <!-- 添加用户对话框 -->
         <el-dialog v-model="addDialogVisible" title="新增用户" width="80%">
-            <el-form :model="addForm" ref="addFormRules">
-                <el-form-item v-for="(item, index) in addFormItem" :key="index" :label="item.label" label-width="120px">
+            <el-form :model="addForm" ref="addFormRules" :rules="addFormRules">
+                <el-form-item v-for="(item, index) in addFormItem" :key="index" :label="item.label" label-width="120px" :prop="item.key">
                     <el-input :type="item.type" v-model="addForm[item.key]" />
                 </el-form-item>
-                <el-form-item label="用户角色" label-width="120px">
-                    <el-select v-model="addForm.authority" placeholder="请选择用户角色权限" style="width: 100%">
+                <el-form-item label="用户角色" label-width="120px" prop="authority">
+                    <el-select v-model="addForm.authority" placeholder="请选择用户角色" style="width: 100%">
                         <el-option label="管理员" value="1" />
                         <el-option label="普通用户" value="2" />
                     </el-select>
@@ -23,9 +23,9 @@
             </el-form>
             <template #footer>
                 <span class="dialog-footer">
-                    <el-button @click="addDialogVisible = false">Cancel</el-button>
+                    <el-button @click="addUserCancel()">取消</el-button>
                     <el-button type="primary" @click="addUserConfirm('addFormRules')">
-                        Confirm
+                        确定
                     </el-button>
                 </span>
             </template>
@@ -50,12 +50,20 @@
 import { Plus } from "@element-plus/icons-vue";
 import axios from "axios";
 import { userList, addFormItem } from "./userManagement/userList";
+import { confirmBox, succesMsg } from '@/common/utils/msgBox.js'
 
 export default {
     components: {
         Plus,
     },
     data() {
+        const equalToPassword = (rule, value, callback) => {
+            if (this.addForm.password !== value) {
+                callback(new Error("两次输入的密码不一致"));
+            } else {
+                callback();
+            }
+        }
         return {
             userList: [],
             listData: [],
@@ -70,13 +78,24 @@ export default {
                 authority: ''
             },
             addFormItem: [],
-            // addFormRules: {
-            //     userName: [{ required: true, message: '请输入用户名称', trigger: 'blur' }],
-            //     phone: [{ required: true, message: '请输入手机号', trigger: 'blur' }],
-            //     password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-            //     confirmPassword: [{ required: true, message: '请再次输入密码', trigger: 'blur' }],
-            //     // authority: [{ required: true, message: '请选择用户角色', trigger: 'change' }]
-            // }
+            addFormRules: {
+                userName: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
+                phone: [
+                    { required: true, message: '手机号不能为空', trigger: 'blur' },
+                    { min: 11, max: 11, message: "请输入11位手机号码", trigger: "blur" },
+                    {
+                        pattern: /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/,
+                        //pattern: /^1[3456789]\d{9}$/,
+                        message: "请输入正确的手机号码",
+                    }
+                ],
+                password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+                confirmPassword: [
+                    { required: true, message: '请再次输入密码', trigger: 'blur' },
+                    { required: true, validator: equalToPassword, trigger: "blur" }
+                ],
+                authority: [{ required: true, message: '请选择用户角色', trigger: ['change'] }]
+            }
         };
     },
     created() {
@@ -100,61 +119,78 @@ export default {
         },
         // 删除
         removeUser(id) {
-            console.log(`output->scope`, id);
-            axios({
-                method: "get",
-                url: "/user/delete",
-                baseURL: "/user_api",
-                params: {
-                    id: id
-                }
-            })
-                .then((res) => {
-                    if(res.status == '200') {
-                        console.log(`output->res.data`,res.data)
-                        this.getData();
-                    } else {
-                        console.log(`output->删除失败`)
+            confirmBox('确定删除吗？', '确定', null).then(() => {
+                axios({
+                    method: "get",
+                    url: "/user/delete",
+                    baseURL: "/user_api",
+                    params: {
+                        id: id
                     }
-                    console.log(`output->res`, res);
                 })
-                .catch((e) => {
-                    console.error(e);
-                });
+                    .then((res) => {
+                        if (res.status == '200') {
+                            succesMsg('删除成功');
+                            // 刷新列表
+                            this.getData();
+                        } else {
+                            console.log(`output->删除失败`)
+                        }
+                        console.log(`output->res`, res);
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
+            }).catch(e => {
+                console.log(e + '操作已取消')
+            })
+            
         },
         // 添加人员确定按钮
         addUserConfirm(formName) {
             
-            // this.$refs[formName].validate((valid) => {
-            //     if (valid) {
-            //         alert('submit!');     // 验证通过后执行的操作
-            //     } else {
-            //         console.log('error submit!!');   //  验证不通过执行的操作
-            //         return false;
-            //     }
-            // });
-            axios({
-                method: "post",
-                url: "/user/addUser",
-                baseURL: "/user_api",
-                data: this.addForm
-            })
-                .then((res) => {
-                    if(res.status == '200') {
-                        alert(res.data);
-                        this.addDialogVisible = false;
-                        this.getData();
-                    } else {
-                        alert('添加失败')
-                    }
-                    
-                })
-                .catch((e) => {
-                    console.error(e);
-                });
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    // 验证通过后执行的操作
+                    confirmBox('确定添加吗？', '确定', null).then(() => {
+                        axios({
+                            method: "post",
+                            url: "/user/addUser",
+                            baseURL: "/user_api",
+                            data: this.addForm
+                        })
+                            .then((res) => {
+                                if (res.status == '200') {
+                                    succesMsg(res.data);
+                                    this.addDialogVisible = false;
+                                    // 刷新列表
+                                    this.getData();
+                                } else {
+                                    alert('添加失败')
+                                }
+
+                            })
+                            .catch((e) => {
+                                console.error(e);
+                            });
+                    }).catch(e => {
+                        console.log(e + '操作失败')
+                    })
+                } else {
+                    console.log('error submit!!');   //  验证不通过执行的操作
+                    return false;
+                }
+            });
+            
+            
             console.log(`output->formName`,formName);
-            
-            
+        },
+        addUserCancel() {
+            confirmBox('确定取消添加操作吗？', '确定', null).then(() => {
+                this.addDialogVisible = false;
+            }).catch(e => {
+                console.log(e + '操作已取消')
+            })
         }
     },
 };

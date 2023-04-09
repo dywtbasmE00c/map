@@ -26,6 +26,7 @@
   </div>
 </template>
 <script>
+import { errorMsg } from '@/common/utils/msgBox.js'
 export default {
   created(){
     this.getCodeImg();
@@ -54,6 +55,9 @@ export default {
               userInfo: res.data.userInfo
             })
             this.$router.push("/cockpit");
+          } else {
+            errorMsg(res.data.msg);
+            this.getCodeImg();
           }
         })
         .catch(e => {

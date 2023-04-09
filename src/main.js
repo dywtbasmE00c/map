@@ -11,7 +11,7 @@ import "element-plus/dist/index.css";
 import router from "./router";
 import store from "./store";
 
-import request from "./Api/request";
+import request from "./common/Api/request";
 
 
 const app = createApp(App);
