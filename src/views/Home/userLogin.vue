@@ -48,7 +48,7 @@ export default {
         params: this.params
       })
         .then(res => {
-          if(res.data.code == '0') {
+          if(res.data.code == '200') {
             this.$store.commit({
               type: 'getUserInfo',
               token: res.data.token,
