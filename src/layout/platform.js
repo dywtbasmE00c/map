@@ -38,8 +38,8 @@ export const platformMenu = [
     authority: 2,
   },
   {
-    name: "多维分析",
-    path: "/platformWork/analysis",
+    name: "企业管理",
+    path: "/platformWork/entManagement",
     authority: 2,
   },
   {

@@ -38,7 +38,3 @@ export const addFormItem = [
     type: 'password'
   }
 ]
-
-export const addBase = {
-
-}

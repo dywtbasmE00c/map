@@ -1,9 +1,11 @@
 <template>
   <div class="session">
-    <div class="session-left session-bg" @click="toInfo">
-      {{ area }}
+    <div class="session-left session-bg">
+      <LeftPart />
     </div>
-    <div class="session-right session-bg"></div>
+    <div class="session-right session-bg">
+      <RightPart />
+    </div>
     <div class="session-bottom session-bg"></div>
     <div class="session-top session-bg"></div>
   </div>
@@ -11,6 +13,8 @@
 <script>
 // import { markRaw } from 'vue'
 // import * as echarts from 'echarts';
+import LeftPart from './leftPart.vue';
+import RightPart from './rightPart.vue';
 
 export default {
   mounted() {
@@ -26,12 +30,11 @@ export default {
       myChart: null
     }
   },
+  components: {
+    LeftPart,
+    RightPart
+  },
   methods: {
-    toInfo() {
-      this.$router.push({
-        name: 'infoSession'
-      })
-    }
     // initChart() {
     //   // 基于准备好的dom，初始化echarts实例
     //   this.myChart = markRaw(echarts.init(document.getElementById('pic')));
@@ -92,6 +95,8 @@ export default {
     height: 20%;
   }
   &-bg {
+    padding: 10px;
+    box-sizing: border-box;
     background: rgba(10, 16, 28, 0.8);
   }
 }

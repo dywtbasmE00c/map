@@ -54,9 +54,9 @@ const platformRouter = [
         component: () => import("@/views/platform/enforce.vue"),
       },
       {
-        path: "/platformWork/analysis",
-        name: "platformWork/analysis",
-        component: () => import("@/views/platform/analysis.vue"),
+        path: "/platformWork/entManagement",
+        name: "platformWork/entManagement",
+        component: () => import("@/views/platform/entManagement.vue"),
       },
       {
         path: "/platformWork/userManagement",

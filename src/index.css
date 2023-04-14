@@ -10,19 +10,26 @@ body {
   width: 100%;
   height: 100%;
 }
-/* ::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-} */
-/* ::-webkit-scrollbar-track {
-  background: rgb(239, 239, 239);
+::-webkit-scrollbar {
+  width: 6px;
+  /* height: 0; */
+} 
+::-webkit-scrollbar-track {
+  background: rgba(238, 238, 238, 0.4);
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb {
-  background: #40a0ff49;
+  background: rgb(238, 238, 238);
   border-radius: 10px;
-} */
+}
 
 .full-y {
   height: 100%;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
 }
