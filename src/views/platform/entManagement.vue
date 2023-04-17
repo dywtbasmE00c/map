@@ -40,19 +40,15 @@
             
         </div>
         <!-- 添加用户对话框 -->
-        <el-dialog v-model="addDialogVisible" title="新增用户" width="80%">
+        <el-dialog v-model="addDialogVisible" title="新增用户" width="60%">
             <el-form :model="addForm" ref="addFormRules" :rules="addFormRules">
-                <el-form-item v-for="(item, index) in addFormItem" :key="index" :label="item.label" label-width="140px"
+                <el-form-item v-for="(item, index) in addFormItem" :key="index" :label="item.label" label-width="180px"
                     :prop="item.prop">
-                    <el-input v-model="addForm[item.prop]" />
-                </el-form-item>
-                <el-form-item label="企业评价" label-width="140px" prop="entType">
-                    <el-select v-model="addForm.entType" placeholder="请选择企业评价结果" style="width: 100%">
-                        <el-option label="A" value="A" />
-                        <el-option label="B" value="B" />
-                        <el-option label="C" value="C" />
-                        <el-option label="D" value="D" />
+                    <!-- 有children选项为select下拉框，否则为input -->
+                    <el-select v-if="item.children" v-model="addForm[item.prop]" placeholder="请选择企业评价结果" style="width: 100%">
+                        <el-option v-for="it in item.children" :key="item.childValueKey ? it[item.childValueKey] : it.childValue" :label="item.childLabelKey ? it[item.childLabelKey] : it.childLabel" :value="item.childValueKey ? it[item.childValueKey] : it.childValue" />
                     </el-select>
+                    <el-input v-else v-model="addForm[item.prop]" />
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -71,7 +67,7 @@
                         :min-width="item.width" />
                     <el-table-column fixed="right" label="操作" width="180">
                         <template #default="scope">
-                            <el-button link type="primary">修改</el-button>
+                            <!-- <el-button link type="primary">修改</el-button> -->
                             <el-button link type="primary" @click.prevent="removeUser(scope.row.id)">删除</el-button>
                         </template>
                     </el-table-column>
@@ -86,7 +82,7 @@
 <script>
 import { Plus, Search } from "@element-plus/icons-vue";
 import axios from "axios";
-import { entList, addFormItem } from "./entManagement/entList"
+import { entList, addFormItem, addFormRules } from "./entManagement/entList"
 import { confirmBox, succesMsg, warnMsg } from '@/common/utils/msgBox.js'
 
 import { genFileId } from 'element-plus'
@@ -110,53 +106,17 @@ export default {
                 entName: '',
                 creditCode: null,
                 dataYear: null,
+                county: '',
                 entRule: 0,
                 entType: '',
                 latitude: 0,
-                longitude: 0
+                longitude: 0,
+                industryNameSimple: '',
+                landAreaVacate: 0,
+                allEnergyConsumeVacate: 0
             },
             addFormItem: [],
-            addFormRules: {
-                entName: [{ required: true, message: '该字段不能为空', trigger: 'blur' }],
-                creditCode: [
-                    { required: true, message: '该字段不能为空', trigger: 'blur' }
-                ],
-                dataYear: [
-                    { required: true, message: '该字段不能为空', trigger: 'blur' },
-                    {
-                        pattern: /^[0-9]*$/,
-                        //pattern: /^1[3456789]\d{9}$/,
-                        message: "请输入正确年份",
-                    }
-                ],
-                entRule: [
-                    { required: true, message: '该字段不能为空', trigger: 'blur' },
-                    {
-                        pattern: /^[0-9]*$/,
-                        //pattern: /^1[3456789]\d{9}$/,
-                        message: "请输入正确企业规模（人数）",
-                    }
-                ],
-                entType: [
-                    { required: true, message: '该字段不能为空', trigger: ['change'] }
-                ],
-                latitude: [
-                    { required: true, message: '该字段不能为空', trigger: 'blur' },
-                    {
-                        pattern: /^[0-9]*$/,
-                        //pattern: /^1[3456789]\d{9}$/,
-                        message: "请输入正确经度（数字）",
-                    }
-                ],
-                longitude: [
-                    { required: true, message: '该字段不能为空', trigger: 'blur' },
-                    {
-                        pattern: /^[0-9]*$/,
-                        //pattern: /^1[3456789]\d{9}$/,
-                        message: "请输入正确纬度（数字）",
-                    }
-                ],
-            },
+            addFormRules: {},
             // 上传
             uploadFiles: null
         };
@@ -165,8 +125,12 @@ export default {
         this.getData();
         this.entList = entList;
         this.addFormItem = addFormItem;
+        this.addFormRules = addFormRules;
+        this.getCounty();
+        this.getIndustry();
     },
     methods: {
+        // 获取列表数据
         getData(current) {
             console.log(`output->current`,current)
             if(current) {
@@ -237,7 +201,7 @@ export default {
                         })
                             .then((res) => {
                                 if (res.status == '200') {
-                                    succesMsg(res.data);
+                                    succesMsg(res.data.msg);
                                     this.addDialogVisible = false;
                                     // 刷新列表
                                     this.getData(1);
@@ -333,8 +297,32 @@ export default {
                     console.error(e)
                 })
         },
+        // 上传-获取当前文件
         fileChange(fileList){
             this.uploadFiles = fileList;
+        },
+        // 初始化地区
+        getCounty() {
+            axios.get('/user_api/public/getAllQZDictArea')
+                .then(res => {
+                    if(res.data.code === 200) {
+                        const index = this.addFormItem.findIndex((obj) => { return obj.prop === 'county'; })
+                        this.addFormItem[index].children = res.data.data
+                    } else {
+                        warnMsg(res.data.msg)
+                    }
+                })
+        },
+        getIndustry() {
+            axios.get('/user_api/public/getAllDictIndustry')
+                .then(res => {
+                    if (res.data.code === 200) {
+                        const index = this.addFormItem.findIndex((obj) => { return obj.prop === 'industryNameSimple'; })
+                        this.addFormItem[index].children = res.data.data
+                    } else {
+                        warnMsg(res.data.msg)
+                    }
+                })
         }
     }
 };

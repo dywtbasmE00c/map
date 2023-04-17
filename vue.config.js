@@ -21,16 +21,16 @@ module.exports = defineConfig({
   },
   devServer: {
     proxy: {
-      // "/api": {
-      //   target: "https://restapi.amap.com/v3",
-      //   ws: true,
-      //   changeOrigin: true,
-      //   pathRewrite: {
-      //     "^/api": "",
-      //   },
-      // },
+      "/api": {
+        target: "https://restapi.amap.com/v3",
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: {
+          "^/api": "",
+        },
+      },
       "/user_api": {
-        target: "http://10.108.109.2:8081",
+        target: "http://192.168.0.103:8081",
         // target: "http://169.254.82.194:8081",
         ws: true,
         changeOrigin: true,

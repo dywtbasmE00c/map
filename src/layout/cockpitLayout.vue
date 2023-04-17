@@ -6,7 +6,7 @@
       <!-- <input placeholder="输入省市区名称" v-model="value" />
       <button @click="change">确定</button>
       {{ value }} -->
-      <div class="input-close" @click="toPlatform">
+      <div v-if="$store.state.userInfo.authority === 1" class="input-close" @click="toPlatform">
         <el-icon><SortUp /></el-icon>回到工作台
       </div>
     </el-header>

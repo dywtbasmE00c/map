@@ -10,17 +10,15 @@
             class="platformLayout__menu"
         >
             <div v-for="(item, index) in platformMenu" :key="index">
-                <div v-if="item.authority >= $store.state.userInfo.authority">
-                    <el-sub-menu v-if="item.children" :index="item.name">
-                        <template #title>
-                            <span>{{ item.name }}</span>
-                        </template>
-                        <el-menu-item v-for="(it, i) in item.children" :key="i" :index="it.name" @click="toPage(it.path)">
-                            {{ it.name }}
-                        </el-menu-item>
-                    </el-sub-menu>
-                    <el-menu-item v-if="!item.children" :index="item.name" @click="toPage(item.path)">{{ item.name }}</el-menu-item>
-                </div>
+                <el-sub-menu v-if="item.children" :index="item.name">
+                    <template #title>
+                        <span>{{ item.name }}</span>
+                    </template>
+                    <el-menu-item v-for="(it, i) in item.children" :key="i" :index="it.name" @click="toPage(it.path)">
+                        {{ it.name }}
+                    </el-menu-item>
+                </el-sub-menu>
+                <el-menu-item v-if="!item.children" :index="item.name" @click="toPage(item.path)">{{ item.name }}</el-menu-item>
 
             </div>
         </el-menu>
