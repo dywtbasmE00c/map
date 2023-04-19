@@ -27,7 +27,7 @@
               <div class="left_container_box_head-span" v-if="item.industryNameSimple">{{ item.industryNameSimple }}</div>
             </div>
             <div class="left_container_box_info">
-              <div>{{ item.entRule ? (item.entRule + '人') : '-' }}</div>
+              <div>{{ item.entRule == '0' ? '规上企业' : item.entRule == '1' ? '规下企业' : '暂无'}}</div>
               <div>{{ item.entType !== '暂无评价' ? (item.entType + '级评价结果') : item.entType }}</div>
               <div>{{ item.county || '-' }}</div>
             </div>

@@ -179,12 +179,13 @@ export default {
                     value: '1'
                 },
             ],
-            entType: '暂无评价',
+            entType: null,
             entTypeSelect: [
                 {
-                    label: '暂无评价',
-                    value: '暂无评价'
+                    label: '全部',
+                    value: null
                 },
+                
                 {
                     label: 'A',
                     value: 'A'
@@ -201,7 +202,10 @@ export default {
                     label: 'D',
                     value: 'D'
                 },
-                
+                {
+                    label: '暂无评价',
+                    value: '暂无评价'
+                },
             ]
         };
     },

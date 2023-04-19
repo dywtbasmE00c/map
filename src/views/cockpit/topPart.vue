@@ -22,16 +22,16 @@ export default {
           unit: '家'
         },
         {
-          key: 'number',
-          subKey: 'numberTarget',
-          label: '整治企业数',
-          unit: '家'
+          key: 'landAreaVacate',
+          subKey: 'landAreaVacateTarget',
+          label: '腾出用地',
+          unit: '万亩'
         },
         {
-          key: 'number',
-          subKey: 'numberTarget',
-          label: '整治企业数',
-          unit: '家'
+          key: 'allEnergyConsumeVacate',
+          subKey: 'allEnergyConsumeVacateTarget',
+          label: '腾出用能',
+          unit: '万吨标煤'
         }
       ],
       listData: {}
@@ -79,7 +79,7 @@ export default {
       color: #337ecc;
       &-span {
         position: absolute;
-        bottom: 18%;
+        bottom: 0%;
         right: 10%;
         font-size: 16px;
         color: white;
