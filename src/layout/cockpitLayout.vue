@@ -16,7 +16,7 @@
 <script>
 import { SortUp } from '@element-plus/icons-vue'
 import AMap from "AMap";
-// import { capitals } from './cockpitMarker.js'
+import { capitals } from './cockpitMarker.js'
 export default {
   components: {
     SortUp
@@ -59,8 +59,8 @@ export default {
       };
       this.district = new AMap.DistrictSearch(opts);
       this.marker();
-      // this.drawBounds();
-      // this.mapClick();
+      this.drawBounds();
+      this.mapClick();
     },
     drawBounds() {
       // if(!this.value) {
@@ -124,8 +124,8 @@ export default {
       this.$router.push('/platform')
     },
     marker(){
-      for(let i=0; i < this.$store.state.entList.length ; i+=1){
-        let center = [ this.$store.state.entList.longitude, this.$store.state.entList.latitude ];
+      for(let i=0; i < capitals.length ; i+=1){
+        let center = capitals[i].center;
         this.circleMarker = new AMap.CircleMarker({
           center:center,
           radius:20+Math.random()*10,//3D视图下，CircleMarker半径不要超过64px
