@@ -205,6 +205,9 @@ export default {
         changeBar() {
             const myEChart = this.$echarts.init(document.getElementById("myEChartsBar"));
             const option = {
+                tooltip: {
+                    trigger: 'item',
+                },
                 xAxis: {
                     data: getAttrs(this.listData, 'binning'),
                     axisLabel: {
