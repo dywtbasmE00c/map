@@ -3,9 +3,6 @@
     <div class="workBg"></div>
     <div id="workSession" class="workSession"></div>
     <el-header class="input">
-      <!-- <input placeholder="输入省市区名称" v-model="value" />
-      <button @click="change">确定</button>
-      {{ value }} -->
       <div v-if="$store.state.userInfo.authority === 1" class="input-close" @click="toPlatform">
         <el-icon><SortUp /></el-icon>回到工作台
       </div>
@@ -18,7 +15,7 @@
 <script>
 import { SortUp } from '@element-plus/icons-vue'
 import AMap from "AMap";
-import { capitals } from './cockpitMarker.js'
+// import { capitals } from './cockpitMarker.js'
 export default {
   components: {
     SortUp
@@ -61,8 +58,8 @@ export default {
       };
       this.district = new AMap.DistrictSearch(opts);
       this.marker();
-      this.drawBounds();
-      this.mapClick();
+      // this.drawBounds();
+      // this.mapClick();
     },
     drawBounds() {
       // if(!this.value) {
@@ -126,11 +123,11 @@ export default {
       this.$router.push('/platform')
     },
     marker(){
-      for(let i=0;i<capitals.length;i+=1){
-        let center = capitals[i].center;
+      for(let i=0; i < this.$store.state.entList.length ; i+=1){
+        let center = [ this.$store.state.entList.longitude, this.$store.state.entList.latitude ];
         this.circleMarker = new AMap.CircleMarker({
           center:center,
-          radius:10+Math.random()*10,//3D视图下，CircleMarker半径不要超过64px
+          radius:20+Math.random()*10,//3D视图下，CircleMarker半径不要超过64px
           strokeColor:'white',
           strokeWeight:2,
           strokeOpacity:0.5,

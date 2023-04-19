@@ -68,6 +68,24 @@ export const addFormItem = [
   {
     label: "低效工作展开年份",
     prop: "dataYear",
+    children: [
+      {
+        childLabel: 2023,
+        childValue: 2023,
+      },
+      {
+        childLabel: 2022,
+        childValue: 2022,
+      },
+      {
+        childLabel: 2021,
+        childValue: 2021,
+      },
+      {
+        childLabel: 2020,
+        childValue: 2020,
+      },
+    ],
   },
   {
     label: "区域名",
@@ -131,15 +149,12 @@ export const addFormRules = {
   entName: [{ required: true, message: "该字段不能为空", trigger: "blur" }],
   creditCode: [{ required: true, message: "该字段不能为空", trigger: "blur" }],
   dataYear: [
-    { required: true, message: "该字段不能为空", trigger: "blur" },
-    {
-      pattern: /^[0-9]*$/,
-      //pattern: /^1[3456789]\d{9}$/,
-      message: "请输入正确年份",
-    },
+    { required: true, message: "该字段不能为空", trigger: ["change"] },
   ],
   county: [{ required: true, message: "该字段不能为空", trigger: ["change"] }],
-  industryNameSimple: [{ required: true, message: "该字段不能为空", trigger: ["change"] }],
+  industryNameSimple: [
+    { required: true, message: "该字段不能为空", trigger: ["change"] },
+  ],
   entRule: [
     { required: true, message: "该字段不能为空", trigger: "blur" },
     {

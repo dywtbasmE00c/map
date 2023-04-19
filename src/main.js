@@ -6,7 +6,7 @@ import "./index.css";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 //echart
-// import echarts from "./echarts";
+import echarts from "./echarts";
 //router
 import router from "./router";
 import store from "./store";
@@ -16,7 +16,7 @@ import request from "./common/Api/request";
 
 const app = createApp(App);
 
-// app.config.globalProperties.$echarts = echarts
+app.config.globalProperties.$echarts = echarts
 
 app.use(ElementPlus);
 app.config.globalProperties.$http = request;

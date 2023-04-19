@@ -6,15 +6,18 @@
     <div class="session-right session-bg">
       <RightPart />
     </div>
-    <div class="session-bottom session-bg"></div>
+    <div class="session-bottom session-bg">
+      <BottomPart />
+    </div>
     <div class="session-top session-bg"></div>
   </div>
 </template>
 <script>
 // import { markRaw } from 'vue'
-// import * as echarts from 'echarts';
+
 import LeftPart from './leftPart.vue';
 import RightPart from './rightPart.vue';
+import BottomPart from './bottomPart.vue';
 
 export default {
   mounted() {
@@ -32,7 +35,8 @@ export default {
   },
   components: {
     LeftPart,
-    RightPart
+    RightPart,
+    BottomPart
   },
   methods: {
     // initChart() {
@@ -77,14 +81,14 @@ export default {
   }
   &-right {
     width: 22%;
-    height: 100%;
+    height: 68%;
     pointer-events: all;
   }
   &-bottom {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 74%;
+    width: 100%;
     height: 31%;
   }
   &-top {

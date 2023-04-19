@@ -1,12 +1,12 @@
 <template>
 <el-container class="platformLayout">
     <el-header class="platformLayout__header">
-        <div>pic-logo</div>
+        <div>工作台</div>
         <div class="platformLayout__header-btn" @click="toCockpit">工业云图驾驶舱</div>
     </el-header>
     <el-main>
         <el-menu
-            default-active="初筛名单"
+            default-active="多维分析"
             class="platformLayout__menu"
         >
             <div v-for="(item, index) in platformMenu" :key="index">

@@ -1,6 +1,18 @@
 <template>
   <div class="left">
-    <div class="left_head">企业列表</div>
+    <div class="left_head">
+      <div>企业列表</div>
+      <div class="left_head-time">
+        <el-select v-model="yuntuYear" @change="yearChange()" size="small" style="width: 80px">
+          <el-option
+            v-for="item in timeSelect"
+            :key="item.value"
+            :label="item.label + '年'"
+            :value="item.value"
+          />
+        </el-select>
+      </div>
+    </div>
     <el-input v-model="searchInput">
         <template #suffix>
             <el-icon @click="searchEnt" style="cursor: pointer"><Search /></el-icon>
@@ -8,7 +20,7 @@
     </el-input>
     <div class="left_container">
       <ul v-infinite-scroll="load" :infinite-scroll-immediate="true" infinite-scroll-distance='1' :infinite-scroll-disabled="current > pages">
-        <li v-for="item in entList" :key="item.id">
+        <li v-for="item in entList" :key="item.id" @click="getEntClick(item.creditCode)">
           <div class="left_container_box">
             <div class="left_container_box_head">
               <div class="left_container_box_head-title">{{ item.entName || '-' }}</div>
@@ -17,7 +29,7 @@
             <div class="left_container_box_info">
               <div>{{ item.entRule ? (item.entRule + '人') : '-' }}</div>
               <div>{{ item.entType !== '暂无评价' ? (item.entType + '级评价结果') : item.entType }}</div>
-              <div>{{ item.city + item.county || '-' }}</div>
+              <div>{{ item.county || '-' }}</div>
             </div>
           </div>
         </li>
@@ -38,7 +50,26 @@ export default {
       searchInput: '',
       entList: [],
       current: 1,
-      pages: 0
+      pages: 0,
+      yuntuYear: 2023,
+      timeSelect: [
+        {
+          label: 2023,
+          value: 2023
+        },
+        {
+          label: 2022,
+          value: 2022
+        },
+        {
+          label: 2021,
+          value: 2021
+        },
+        {
+          label: 2020,
+          value: 2020
+        },
+      ]
     }
   },
   created() {
@@ -49,8 +80,8 @@ export default {
       this.current++
       this.getData()
     },
+    // 获取左侧列表数据
     getData(current) {
-      console.log(`output->current`, current)
       if (current) {
         this.current = current;
       }
@@ -63,24 +94,49 @@ export default {
         baseURL: "",
         params: {
           current: this.current,
-          size: 1
+          size: 10
         },
         data: {
-          entName: this.searchInput
-
+          entName: this.searchInput,
+          dataYear: this.yuntuYear
         }
       })
         .then((res) => {
           this.entList = this.entList.concat(res.data.data.records);
           this.total = res.data.data.total;
           this.pages = res.data.data.pages;
+          this.$store.commit({
+            type: 'getEntData',
+            entList: this.entList
+          })
+          if(this.current === 1) {
+              this.yearChange()
+              this.getEntClick(res.data.data.records[0].creditCode)
+          }
         })
         .catch((e) => {
           console.error(e);
         });
     },
+    // 时间框change
+    yearChange() {
+      this.$store.commit({
+        type: 'getYuntuYear',
+        yuntuYear: this.yuntuYear
+      })
+      this.getData(1)
+    },
+    // 搜索框
     searchEnt() {
       this.getData(1)
+    },
+    // 点击获取选中企业数据
+    getEntClick(ent) {
+      console.log(`output->ent`, ent)
+      this.$store.commit({
+        type: 'getEntCode',
+        creditCode: ent
+      })
     }
   }
 }
@@ -91,6 +147,8 @@ export default {
   flex-direction: column;
   height: 100%;
   &_head {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 10px;
     font-size: 20px;
     font-family: '汉仪菱心体简', sans-serif;
