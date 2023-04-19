@@ -7,13 +7,38 @@
                 <el-icon>
                     <Plus />
                 </el-icon>
-                新增企业</el-button>
+                新增企业
+            </el-button>
             <el-button type="primary" @click="exportExcel">导出企业数据</el-button>
-            <el-input v-model="searchInput" placeholder="输入企业名称" clearable style="margin-top: 10px;">
+            <el-input v-model="searchInput" placeholder="输入企业名称" clearable style="margin: 10px 0;">
                 <template #suffix>
                     <el-icon @click="searchEnt" style="cursor: pointer"><Search /></el-icon>
                 </template>
             </el-input>
+            <el-select v-model="dataYear" @change="yearChange()" style="width: 140px; margin-right: 10px">
+              <el-option
+                v-for="item in timeSelect"
+                :key="item.value"
+                :label="item.label + '年'"
+                :value="item.value"
+              />
+            </el-select>
+            <el-select v-model="entRule" @change="yearChange()" style="width: 140px; margin-right: 10px">
+                  <el-option
+                    v-for="item in entRuleSelect"
+                    :key="item.label"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+            </el-select>
+            <el-select v-model="entType" @change="yearChange()" style="width: 140px">
+                  <el-option
+                    v-for="item in entTypeSelect"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  />
+            </el-select>
             </div>
             <!-- el-upload 导入企业数据 -->
             <el-upload
@@ -40,7 +65,7 @@
             
         </div>
         <!-- 添加用户对话框 -->
-        <el-dialog v-model="addDialogVisible" title="新增用户" width="60%">
+        <el-dialog v-model="addDialogVisible" title="新增企业" width="60%">
             <el-form :model="addForm" ref="addFormRules" :rules="addFormRules">
                 <el-form-item v-for="(item, index) in addFormItem" :key="index" :label="item.label" label-width="180px"
                     :prop="item.prop">
@@ -107,7 +132,7 @@ export default {
                 creditCode: null,
                 dataYear: null,
                 county: '',
-                entRule: 0,
+                entRule: '',
                 entType: '',
                 latitude: 0,
                 longitude: 0,
@@ -118,7 +143,66 @@ export default {
             addFormItem: [],
             addFormRules: {},
             // 上传
-            uploadFiles: null
+            uploadFiles: null,
+            //时间筛选
+            dataYear: 2023,
+            timeSelect: [
+                {
+                    label: 2023,
+                    value: 2023
+                },
+                {
+                    label: 2022,
+                    value: 2022
+                },
+                {
+                    label: 2021,
+                    value: 2021
+                },
+                {
+                    label: 2020,
+                    value: 2020
+                },
+            ],
+            entRule: null,
+            entRuleSelect: [
+                {
+                    label: '全部',
+                    value: null
+                },
+                {
+                    label: '规上企业',
+                    value: '0'
+                },
+                {
+                    label: '规下企业',
+                    value: '1'
+                },
+            ],
+            entType: '暂无评价',
+            entTypeSelect: [
+                {
+                    label: '暂无评价',
+                    value: '暂无评价'
+                },
+                {
+                    label: 'A',
+                    value: 'A'
+                },
+                {
+                    label: 'B',
+                    value: '0'
+                },
+                {
+                    label: 'C',
+                    value: 'C'
+                },
+                {
+                    label: 'D',
+                    value: 'D'
+                },
+                
+            ]
         };
     },
     created() {
@@ -145,8 +229,10 @@ export default {
                     size: 10
                 },
                 data: {
-                    entName: this.searchInput
-
+                    entName: this.searchInput,
+                    dataYear: this.dataYear,
+                    entRule: this.entRule,
+                    entType: this.entType
                 }
             })
                 .then((res) => {
@@ -323,6 +409,9 @@ export default {
                         warnMsg(res.data.msg)
                     }
                 })
+        },
+        yearChange() {
+            this.getData(1)
         }
     }
 };

@@ -3,7 +3,8 @@
     <div class="workBg"></div>
     <div id="workSession" class="workSession"></div>
     <el-header class="input">
-      <div v-if="$store.state.userInfo.authority === 1" class="input-close" @click="toPlatform">
+      <!-- v-if="$store.state.userInfo.authority === 1" -->
+      <div class="input-close" @click="toPlatform">
         <el-icon><SortUp /></el-icon>回到工作台
       </div>
     </el-header>

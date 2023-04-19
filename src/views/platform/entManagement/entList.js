@@ -25,9 +25,9 @@ export const entList = [
     width: 280,
   },
   {
-    label: "企业规模",
+    label: "企业规模(0-规上，1-规下)",
     prop: "entRule",
-    width: 160,
+    width: 200,
   },
   {
     label: "企业评价结果",
@@ -37,12 +37,12 @@ export const entList = [
   {
     label: "腾出用地面积（亩）",
     prop: "landAreaVacate",
-    width: 140,
+    width: 160,
   },
   {
     label: "腾出用能（吨标煤）",
     prop: "allEnergyConsumeVacate",
-    width: 140,
+    width: 160,
   },
   {
     label: "经度",
@@ -102,7 +102,7 @@ export const addFormItem = [
     childValueKey: "industryName",
   },
   {
-    label: "企业规模",
+    label: "企业规模(0-规上，1-规下)",
     prop: "entRule",
   },
   {
@@ -124,6 +124,10 @@ export const addFormItem = [
       {
         childLabel: "D",
         childValue: "D",
+      },
+      {
+        childLabel: "暂无评价",
+        childValue: "暂无评价",
       },
     ],
   },
@@ -157,11 +161,6 @@ export const addFormRules = {
   ],
   entRule: [
     { required: true, message: "该字段不能为空", trigger: "blur" },
-    {
-      pattern: /^[0-9]*$/,
-      //pattern: /^1[3456789]\d{9}$/,
-      message: "请输入正确企业规模（人数）",
-    },
   ],
   entType: [{ required: true, message: "该字段不能为空", trigger: ["change"] }],
   latitude: [

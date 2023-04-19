@@ -2,14 +2,14 @@
 <template>
     <div class="userManagement">
         <div class="userManagement_btnGroup">
-            <el-button type="primary" @click="addDialogVisible = true">
+            <el-button type="primary" @click="openDialog('新增用户')">
                 <el-icon>
                     <Plus />
                 </el-icon>
                 新增用户</el-button>
         </div>
         <!-- 添加用户对话框 -->
-        <el-dialog v-model="addDialogVisible" title="新增用户" width="80%">
+        <el-dialog v-model="addDialogVisible" :title="dialogTitle" width="80%">
             <el-form :model="addForm" ref="addFormRules" :rules="addFormRules">
                 <el-form-item v-for="(item, index) in addFormItem" :key="index" :label="item.label" label-width="120px" :prop="item.key">
                     <el-input :type="item.type" v-model="addForm[item.key]" />
@@ -37,7 +37,7 @@
                         :min-width="item.width" />
                     <el-table-column fixed="right" label="操作" width="180">
                         <template #default="scope">
-                            <el-button link type="primary">修改</el-button>
+                            <el-button link type="primary" @click="openDialog('修改用户', scope.row.id)">修改</el-button>
                             <el-button link type="primary" @click.prevent="removeUser(scope.row.id)">删除</el-button>
                         </template>
                     </el-table-column>
@@ -65,6 +65,7 @@ export default {
             }
         }
         return {
+            dialogTitle: '',
             userList: [],
             listData: [],
             // 添加角色对话框
@@ -104,6 +105,23 @@ export default {
         this.addFormItem = addFormItem;
     },
     methods: {
+        openDialog(dialogTitle, id) {
+            this.addDialogVisible = true
+            this.dialogTitle = dialogTitle
+            if(id) {
+                axios({
+                    method:'post',
+                    url: '/user_api/user/getOne',
+                    params: {
+                        id:id
+                    }
+                }).then(res => {
+                    this.addForm = res.data[0]
+                }).catch(e => {
+                    console.error(e)
+                })
+            }
+        },
         getData() {
             axios({
                 method: "get",
@@ -122,8 +140,7 @@ export default {
             confirmBox('确定删除吗？', '确定', null).then(() => {
                 axios({
                     method: "get",
-                    url: "/user/delete",
-                    baseURL: "/user_api",
+                    url: "/user_api/user/delete",
                     params: {
                         id: id
                     }
@@ -152,11 +169,11 @@ export default {
             this.$refs[formName].validate((valid) => {
                 if (valid) {
                     // 验证通过后执行的操作
-                    confirmBox('确定添加吗？', '确定', null).then(() => {
+                    confirmBox('确定' + this.dialogTitle + '吗？', '确定', null).then(() => {
+                        const url = this.dialogTitle === '新增用户' ? '/user_api/user/addUser' : '/user_api/user/update'
                         axios({
                             method: "post",
-                            url: "/user/addUser",
-                            baseURL: "/user_api",
+                            url: url,
                             data: this.addForm
                         })
                             .then((res) => {
@@ -166,7 +183,7 @@ export default {
                                     // 刷新列表
                                     this.getData();
                                 } else {
-                                    alert('添加失败')
+                                    alert(this.dialogTitle + '失败')
                                 }
 
                             })
@@ -186,7 +203,7 @@ export default {
             console.log(`output->formName`,formName);
         },
         addUserCancel() {
-            confirmBox('确定取消添加操作吗？', '确定', null).then(() => {
+            confirmBox('确定取消' + this.dialogTitle + '操作吗？', '确定', null).then(() => {
                 this.addDialogVisible = false;
             }).catch(e => {
                 console.log(e + '操作已取消')
