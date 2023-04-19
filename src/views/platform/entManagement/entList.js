@@ -46,12 +46,12 @@ export const entList = [
   },
   {
     label: "经度",
-    prop: "latitude",
+    prop: "longitude",
     width: 120,
   },
   {
     label: "纬度",
-    prop: "longitude",
+    prop: "latitude",
     width: 120,
   },
 ];
@@ -137,11 +137,11 @@ export const addFormItem = [
   },
   {
     label: "经度",
-    prop: "latitude",
+    prop: "longitude",
   },
   {
     label: "纬度",
-    prop: "longitude",
+    prop: "latitude",
   },
 ];
 
@@ -169,7 +169,7 @@ export const addFormRules = {
     {
       pattern: /^[0-9]*$/,
       //pattern: /^1[3456789]\d{9}$/,
-      message: "请输入正确经度（数字）",
+      message: "请输入正确纬度（数字）",
     },
   ],
   longitude: [
@@ -177,7 +177,7 @@ export const addFormRules = {
     {
       pattern: /^[0-9]*$/,
       //pattern: /^1[3456789]\d{9}$/,
-      message: "请输入正确纬度（数字）",
+      message: "请输入正确经度（数字）",
     },
   ],
   landAreaVacate: [

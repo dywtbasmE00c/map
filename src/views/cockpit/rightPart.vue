@@ -66,12 +66,12 @@ export default {
         },
         {
           label: "经度",
-          prop: "latitude",
+          prop: "longitude", 
           width: 120,
         },
         {
           label: "纬度",
-          prop: "longitude",
+          prop: "latitude",
           width: 120,
         },
       ]
@@ -112,6 +112,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .right {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   &_head {
     margin-bottom: 10px;
     font-size: 20px;
@@ -121,15 +124,13 @@ export default {
     border-bottom: 1px solid lightblue;
   }
   &_content {
-    display: flex;
-    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
     &-title {
       color: #337ecc;
       font-size: 20px;
     }
     &-list {
-      flex: 1;
-      overflow-y: auto;
       &-item {
         display: flex;
         margin: 10px 0;

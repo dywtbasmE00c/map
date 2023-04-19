@@ -9,7 +9,9 @@
     <div class="session-bottom session-bg">
       <BottomPart />
     </div>
-    <div class="session-top session-bg"></div>
+    <div class="session-top session-bg">
+      <TopPart />
+    </div>
   </div>
 </template>
 <script>
@@ -18,6 +20,7 @@
 import LeftPart from './leftPart.vue';
 import RightPart from './rightPart.vue';
 import BottomPart from './bottomPart.vue';
+import TopPart from './topPart.vue';
 
 export default {
   mounted() {
@@ -36,7 +39,8 @@ export default {
   components: {
     LeftPart,
     RightPart,
-    BottomPart
+    BottomPart,
+    TopPart
   },
   methods: {
     // initChart() {
@@ -96,7 +100,7 @@ export default {
     top: 0;
     left: 26%;
     width: 48%;
-    height: 20%;
+    height: 15%;
   }
   &-bg {
     padding: 10px;
