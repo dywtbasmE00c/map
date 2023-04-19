@@ -40,6 +40,15 @@ export default {
   created() {
     this.getInfo()
   },
+  watch: {
+    '$store.state.yuntuYear': {
+      handler: function () {
+        this.getInfo()
+      },
+      immediate: true
+    },
+
+  },
   methods: {
     getInfo() {
       axios({
