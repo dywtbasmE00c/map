@@ -2,7 +2,7 @@
   <div class="right">
     <div class="right_head">企业详情</div>
     <div class="right_content">
-      <div class="right_content-title">{{ entDetail.entName }}</div>
+      <div class="right_content-title">{{ entDetail.entName}}</div>
       <div class="right_content-list">
         <ul>
           <li v-for="(item, index) in listItem" :key="index" class="right_content-list-item">
@@ -87,6 +87,7 @@ export default {
       handler: function() {
         this.getEntDetail()
       },
+      immediate: true
     },
 
   },
