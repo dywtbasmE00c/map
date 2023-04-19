@@ -225,10 +225,14 @@ export default {
                     },
                 },
                 yAxis: [
+                    
                     {
                         type: 'value',
                         name: this.tabSelect === 'number' ? '整治企业数（家）' : this.tabSelect === 'landAreaVacate' ? '腾出用地（万亩）' : '腾出用能（万吨标煤）',
                         show: true,
+                        axisLabel: {
+                            formatter: '{value}'
+                        },
                         axisLine: {
                             lineStyle: {
                                 color: '#5e859e',
@@ -239,8 +243,8 @@ export default {
                     {
                         type: 'value',
                         name: '完成率',
-                        min: 0,
-                        max: 100,
+                        // min: 0,
+                        // max: 100,
                         axisLabel: {
                             formatter: '{value} %'
                         },
@@ -250,16 +254,19 @@ export default {
                                 width: 2
                             }
                         }
-                    }
+                    },
                 ],
                 series: [
                     {
+                        name: this.tabSelect === 'number' ? '整治企业数（家）' : this.tabSelect === 'landAreaVacate' ? '腾出用地（万亩）' : '腾出用能（万吨标煤）',
                         type: "bar",
                         data: getAttrs(this.listData, this.tabSelect),
                     },
                     {
+                        name: '完成率',
                         data: getAttrs(this.listData, this.tabSelect+'CompletionRate'),
-                        type: 'line'
+                        type: 'line',
+                        yAxisIndex: 1
                     }
                 ],
             };
