@@ -131,7 +131,7 @@ export default {
                 entName: '',
                 creditCode: null,
                 dataYear: null,
-                county: '',
+                areaCode: '',
                 entRule: '',
                 entType: '',
                 latitude: 0,
@@ -396,7 +396,7 @@ export default {
             axios.get('/user_api/public/getAllQZDictArea')
                 .then(res => {
                     if(res.data.code === 200) {
-                        const index = this.addFormItem.findIndex((obj) => { return obj.prop === 'county'; })
+                        const index = this.addFormItem.findIndex((obj) => { return obj.prop === 'areaCode'; })
                         this.addFormItem[index].children = res.data.data
                     } else {
                         warnMsg(res.data.msg)
@@ -407,7 +407,7 @@ export default {
             axios.get('/user_api/public/getAllDictIndustry')
                 .then(res => {
                     if (res.data.code === 200) {
-                        const index = this.addFormItem.findIndex((obj) => { return obj.prop === 'code'; })
+                        const index = this.addFormItem.findIndex((obj) => { return obj.prop === 'industryCode'; })
                         this.addFormItem[index].children = res.data.data
                     } else {
                         warnMsg(res.data.msg)

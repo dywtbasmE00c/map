@@ -89,14 +89,14 @@ export const addFormItem = [
   },
   {
     label: "区域名",
-    prop: "county",
+    prop: "areaCode",
     children: [],
     childLabelKey: "county",
-    childValueKey: "county",
+    childValueKey: "areaCode",
   },
   {
     label: "行业名",
-    prop: "code",
+    prop: "industryCode",
     children: [],
     childLabelKey: "industryName",
     childValueKey: "code",
@@ -155,13 +155,11 @@ export const addFormRules = {
   dataYear: [
     { required: true, message: "该字段不能为空", trigger: ["change"] },
   ],
-  county: [{ required: true, message: "该字段不能为空", trigger: ["change"] }],
-  code: [
+  areaCode: [{ required: true, message: "该字段不能为空", trigger: ["change"] }],
+  industryCode: [
     { required: true, message: "该字段不能为空", trigger: ["change"] },
   ],
-  entRule: [
-    { required: true, message: "该字段不能为空", trigger: "blur" },
-  ],
+  entRule: [{ required: true, message: "该字段不能为空", trigger: "blur" }],
   entType: [{ required: true, message: "该字段不能为空", trigger: ["change"] }],
   latitude: [
     { required: true, message: "该字段不能为空", trigger: "blur" },
