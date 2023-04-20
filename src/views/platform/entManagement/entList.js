@@ -96,10 +96,10 @@ export const addFormItem = [
   },
   {
     label: "行业名",
-    prop: "industryNameSimple",
+    prop: "code",
     children: [],
     childLabelKey: "industryName",
-    childValueKey: "industryName",
+    childValueKey: "code",
   },
   {
     label: "企业规模(0-规上，1-规下)",
@@ -156,7 +156,7 @@ export const addFormRules = {
     { required: true, message: "该字段不能为空", trigger: ["change"] },
   ],
   county: [{ required: true, message: "该字段不能为空", trigger: ["change"] }],
-  industryNameSimple: [
+  code: [
     { required: true, message: "该字段不能为空", trigger: ["change"] },
   ],
   entRule: [

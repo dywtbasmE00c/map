@@ -136,7 +136,7 @@ export default {
                 entType: '',
                 latitude: 0,
                 longitude: 0,
-                industryNameSimple: '',
+                code: '',
                 landAreaVacate: 0,
                 allEnergyConsumeVacate: 0
             },
@@ -407,7 +407,7 @@ export default {
             axios.get('/user_api/public/getAllDictIndustry')
                 .then(res => {
                     if (res.data.code === 200) {
-                        const index = this.addFormItem.findIndex((obj) => { return obj.prop === 'industryNameSimple'; })
+                        const index = this.addFormItem.findIndex((obj) => { return obj.prop === 'code'; })
                         this.addFormItem[index].children = res.data.data
                     } else {
                         warnMsg(res.data.msg)
