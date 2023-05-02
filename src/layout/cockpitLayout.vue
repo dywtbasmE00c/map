@@ -138,10 +138,10 @@ export default {
           center:this.$store.state.entPoint,
            icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
           // radius:20+Math.random()*10,//3D视图下，CircleMarker半径不要超过64px
-          // strokeColor:'white',
-          // strokeWeight:2,
-          // strokeOpacity:0.5,
-          // fillColor:'rgba(0,0,255,1)',
+          strokeColor:'white',
+          strokeWeight:2,
+          strokeOpacity:0.5,
+          fillColor:'rgba(0,0,255,1)',
           fillOpacity:0.5,
           zIndex:10,
           bubble:true,
@@ -149,10 +149,11 @@ export default {
           clickable: true
         })
         this.circleMarker.setMap(this.map)
-        this.circleMarker.on('click', ()=> {
-          console.log(1)
-          this.map.panTo(this.$store.state.entPoint)
-        })
+        this.map.panTo(this.$store.state.entPoint)
+        // this.circleMarker.on('click', ()=> {
+        //   console.log(1)
+          
+        // })
         
         
         // this.map.panBy(50, 100)
