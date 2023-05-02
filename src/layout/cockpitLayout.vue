@@ -9,14 +9,14 @@
       </div>
     </el-header>
     <el-main class="app-main">
-      <router-view :area="value" />
+      <router-view />
     </el-main>
   </el-container>
 </template>
 <script>
 import { SortUp } from '@element-plus/icons-vue'
 import AMap from "AMap";
-import { capitals } from './cockpitMarker.js'
+// import { capitals } from './cockpitMarker.js'
 export default {
   components: {
     SortUp
@@ -26,27 +26,27 @@ export default {
       map: null,
       district: null,
       geoCoder: null,
-      value: "浙江省",
       polygons: [],
       circleMarker: null
     };
   },
-  // watch: {
-  //   value: {
-  //     immediate: true,
-  //     handler() {
-  //       this.drawBounds();
-  //     },
-  //   },
-  // },
+  watch: {
+    '$store.state.entCreditCode': {
+      // immediate: true,
+      handler() {
+        console.log(`output->market`)
+        this.marker();
+      },
+    },
+  },
   mounted() {
     this.initMap();
   },
   methods: {
     initMap() {
       this.map = new AMap.Map("workSession", {
-        zoom: 6,
-        center: [116.30946, 39.937629],
+        zoom: 8,
+        center: [120.152585, 30.266597],
         viewMode: "3D",
         mapStyle: "amap://styles/fresh",
         resizeEnable: true,
@@ -58,9 +58,9 @@ export default {
         // level: "province", //查询行政级别为 市
       };
       this.district = new AMap.DistrictSearch(opts);
-      this.marker();
-      this.drawBounds();
-      this.mapClick();
+      // this.drawBounds();
+      // this.mapClick();
+      // this.marker()
     },
     drawBounds() {
       // if(!this.value) {
@@ -75,6 +75,7 @@ export default {
       this.district.search(this.value, function (status, result) {
         that.polygons = [];
         const cities = result.districtList[0].districtList;
+        console.log(`output->result`,result)
         cities.forEach((item, index) => {
           that.district.search(item.name, function (status, result) {
             that.polygons[index] = [];
@@ -86,7 +87,7 @@ export default {
                   strokeWeight: 1,
                   path: bounds[i],
                   fillOpacity: 0.4,
-                  fillColor: "red",
+                  // fillColor: "red",
                   strokeColor: "purple",
                 });
                 that.polygons[index].push(polygon);
@@ -114,6 +115,7 @@ export default {
             // let cityId = parseInt(adcode.substr(0, 4) + "00");
             // let areaId = adcode;
             // console.log("点击位置的省市区id：", provinceId, cityId, areaId);
+            console.log('1', result.regeocode.formattedAddress.indexOf('省'))
             that.value = result.regeocode.formattedAddress.slice(0, 3);
             that.drawBounds();
           }
@@ -124,15 +126,22 @@ export default {
       this.$router.push('/platform')
     },
     marker(){
-      for(let i=0; i < capitals.length ; i+=1){
-        let center = capitals[i].center;
+      // for(let i=0; i < capitals.length ; i+=1){
+        // let center = capitals.center;
+        if(this.circleMarker !== null) {
+          
+          this.circleMarker.setMap(null)
+          this.circleMarker = null
+        }
+        console.log(this.$store.state.entPoint)
         this.circleMarker = new AMap.CircleMarker({
-          center:center,
-          radius:20+Math.random()*10,//3D视图下，CircleMarker半径不要超过64px
-          strokeColor:'white',
-          strokeWeight:2,
-          strokeOpacity:0.5,
-          fillColor:'rgba(0,0,255,1)',
+          center:this.$store.state.entPoint,
+           icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+          // radius:20+Math.random()*10,//3D视图下，CircleMarker半径不要超过64px
+          // strokeColor:'white',
+          // strokeWeight:2,
+          // strokeOpacity:0.5,
+          // fillColor:'rgba(0,0,255,1)',
           fillOpacity:0.5,
           zIndex:10,
           bubble:true,
@@ -142,8 +151,12 @@ export default {
         this.circleMarker.setMap(this.map)
         this.circleMarker.on('click', ()=> {
           console.log(1)
+          this.map.panTo(this.$store.state.entPoint)
         })
-      }
+        
+        
+        // this.map.panBy(50, 100)
+      // }
     }
   },
 };

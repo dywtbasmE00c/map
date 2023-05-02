@@ -20,7 +20,7 @@
     </el-input>
     <div class="left_container">
       <ul v-infinite-scroll="load" :infinite-scroll-immediate="true" infinite-scroll-distance='1' :infinite-scroll-disabled="current > pages">
-        <li v-for="item in entList" :key="item.id" @click="getEntClick(item.creditCode)">
+        <li v-for="item in entList" :key="item.id" @click="getEntClick(item)">
           <div class="left_container_box">
             <div class="left_container_box_head">
               <div class="left_container_box_head-title">{{ item.entName || '-' }}</div>
@@ -111,7 +111,7 @@ export default {
           })
           if(this.current === 1) {
               this.yearChange()
-              this.getEntClick(res.data.data.records[0].creditCode)
+              this.getEntClick(res.data.data.records[0])
           }
         })
         .catch((e) => {
@@ -135,7 +135,16 @@ export default {
       console.log(`output->ent`, ent)
       this.$store.commit({
         type: 'getEntCode',
-        creditCode: ent
+        creditCode: ent.creditCode
+      })
+      this.$store.commit({
+        type: 'getEntPoint',
+        longitude: ent.longitude,
+        latitude: ent.latitude
+      })
+      this.$store.commit({
+        type: 'getEntName',
+        entName: ent.entName
       })
     }
   }

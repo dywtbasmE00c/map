@@ -70,7 +70,7 @@
                 <el-form-item v-for="(item, index) in addFormItem" :key="index" :label="item.label" label-width="180px"
                     :prop="item.prop">
                     <!-- 有children选项为select下拉框，否则为input -->
-                    <el-select v-if="item.children" v-model="addForm[item.prop]" placeholder="请选择企业评价结果" style="width: 100%">
+                    <el-select v-if="item.children" v-model="addForm[item.prop]" placeholder="请选择" style="width: 100%">
                         <el-option v-for="it in item.children" :key="item.childValueKey ? it[item.childValueKey] : it.childValue" :label="item.childLabelKey ? it[item.childLabelKey] : it.childLabel" :value="item.childValueKey ? it[item.childValueKey] : it.childValue" />
                     </el-select>
                     <el-input v-else v-model="addForm[item.prop]" />

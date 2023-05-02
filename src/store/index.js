@@ -6,8 +6,10 @@ const store = createStore({
       userInfo: {},
       token: "",
       yuntuYear: 2023,
+      entName: '',
       entCreditCode: '',
-      entList: []
+      entList: [],
+      entPoint: []
     };
   },
   mutations: {
@@ -23,6 +25,13 @@ const store = createStore({
     },
     getEntData: function(state, data) {
       state.entList = data.entList
+    },
+    getEntPoint: function(state, data) {
+      state.entPoint[0] = data.longitude
+      state.entPoint[1] = data.latitude
+    },
+    getEntName: function(state, data) {
+      state.entName = data.entName
     }
   },
   actions: {

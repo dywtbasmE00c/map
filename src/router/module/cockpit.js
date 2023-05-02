@@ -11,11 +11,11 @@ const cockpitRouter = [
         path: "/cockpitWork",
         component: () => import("@/views/cockpit/workSession.vue"),
       },
-      {
-        path: "/cockpitInfo",
-        name: 'infoSession',
-        component: () => import("@/views/cockpit/infoSession.vue"),
-      },
+      // {
+      //   path: "/cockpitInfo",
+      //   name: 'infoSession',
+      //   component: () => import("@/views/cockpit/infoSession.vue"),
+      // },
     ],
   },
 ];
