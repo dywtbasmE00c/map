@@ -105,6 +105,7 @@ export default {
         this.addFormItem = addFormItem;
     },
     methods: {
+        // 打开对话框
         openDialog(dialogTitle, id) {
             this.addDialogVisible = true
             this.dialogTitle = dialogTitle
@@ -122,6 +123,7 @@ export default {
                 })
             }
         },
+        // 获取列表数据
         getData() {
             axios({
                 method: "get",
@@ -202,6 +204,7 @@ export default {
             
             console.log(`output->formName`,formName);
         },
+        // 确定取消按钮
         addUserCancel() {
             confirmBox('确定取消' + this.dialogTitle + '操作吗？', '确定', null).then(() => {
                 this.addDialogVisible = false;

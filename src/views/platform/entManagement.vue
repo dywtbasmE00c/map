@@ -403,6 +403,7 @@ export default {
                     }
                 })
         },
+        // 获取工业名称信息
         getIndustry() {
             axios.get('/user_api/public/getAllDictIndustry')
                 .then(res => {
@@ -414,6 +415,7 @@ export default {
                     }
                 })
         },
+        // 年份切换
         yearChange() {
             this.getData(1)
         }

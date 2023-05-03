@@ -30,7 +30,7 @@ module.exports = defineConfig({
         },
       },
       "/user_api": {
-        target: "http://10.108.96.166:8081",
+        target: "http://10.108.23.177:8081",
         // target: "http://169.254.82.194:8081",
         ws: true,
         changeOrigin: true,
